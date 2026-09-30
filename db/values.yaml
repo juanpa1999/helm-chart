@@ -1,0 +1,32 @@
+# Los nombres por defecto son los mismos de dp-db.yaml, para que el backend
+# (DB_HOST=db-service) y up.sh (deploy/db-deployment) sigan funcionando.
+deploymentName: db-deployment
+
+image:
+  repository: jpcc141999/db1
+  # Fija un tag real en cuanto exista; "latest" puede traer otra versión en cada redeploy.
+  tag: latest
+  pullPolicy: IfNotPresent
+
+containerPort: 5432
+
+service:
+  name: db-service
+  type: ClusterIP
+  port: 5432
+
+# Las credenciales viven dentro de la imagen db1; pg_isready no necesita password.
+readinessProbe:
+  enabled: true
+  user: postgres
+  database: postgres
+
+# Desactivado = mismo comportamiento que dp-db.yaml (los datos se pierden si el pod
+# se reinicia). Actívalo para que la DB sobreviva reinicios del pod.
+persistence:
+  enabled: false
+  size: 1Gi
+  storageClass: ""        # vacío = storageClass por defecto del cluster
+  mountPath: /var/lib/postgresql/data
+
+resources: {}

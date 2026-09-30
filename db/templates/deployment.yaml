@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deploymentName }}
+  labels:
+    app: db
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+spec:
+  replicas: 1
+  {{- if .Values.persistence.enabled }}
+  # Un PVC ReadWriteOnce no se puede montar en dos pods a la vez durante un rolling update.
+  strategy:
+    type: Recreate
+  {{- end }}
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+        - name: db
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.containerPort }}
+          {{- if .Values.readinessProbe.enabled }}
+          readinessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - {{ .Values.readinessProbe.user | quote }}
+                - -d
+                - {{ .Values.readinessProbe.database | quote }}
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if .Values.persistence.enabled }}
+          env:
+            # initdb falla si el volumen trae lost+found en la raíz del mount.
+            - name: PGDATA
+              value: {{ .Values.persistence.mountPath }}/pgdata
+          volumeMounts:
+            - name: data
+              mountPath: {{ .Values.persistence.mountPath }}
+          {{- end }}
+      {{- if .Values.persistence.enabled }}
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ .Values.deploymentName }}-data
+      {{- end }}

@@ -1,0 +1,52 @@
+# Los nombres por defecto son los mismos de dp-back.yaml; el label app=back lo usa up.sh.
+deploymentName: back-deployment
+
+replicaCount: 1
+
+image:
+  repository: jpcc141999/back3
+  # Fija un tag real en cuanto exista; "latest" puede traer otra versión en cada redeploy.
+  tag: latest
+  pullPolicy: IfNotPresent
+
+containerPort: 8000
+
+service:
+  name: back-service
+  type: NodePort
+  port: 8000
+  nodePort: 32001   # vacío = Kubernetes asigna uno
+
+# Nombre del Service de ../db. Se usa como DB_HOST y para esperar a que la DB responda.
+# No está linkeado automáticamente con el chart db: si cambias service.name allá, cámbialo acá.
+db:
+  host: db-service
+  port: 5432
+
+# Variables extra del contenedor (se aplican también al Job de migración).
+extraEnv:
+  - name: NGROK
+    value: front-service
+
+# Imagen usada solo para correr pg_isready antes de arrancar/migrar.
+waitForDb:
+  enabled: true
+  image: postgres:16-alpine
+
+# Cómo correr `alembic upgrade head`:
+#   job            -> Job como hook de Helm post-install/post-upgrade (recomendado).
+#                     Con ArgoCD se traduce a un hook PostSync.
+#   initContainer  -> initContainer del Deployment; migra antes de cada arranque de pod.
+#                     Solo seguro con replicaCount: 1 (varias réplicas migrarían en paralelo).
+#   none           -> no migra; hazlo a mano:
+#                     kubectl exec deploy/back-deployment -- alembic upgrade head
+migrations:
+  mode: job
+  command: ["alembic", "upgrade", "head"]
+  backoffLimit: 3
+  activeDeadlineSeconds: 600
+
+readinessProbe:
+  enabled: true   # tcpSocket: no conocemos un endpoint /health real en la imagen back3
+
+resources: {}

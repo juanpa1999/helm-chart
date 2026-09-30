@@ -1,0 +1,25 @@
+# Los nombres por defecto son los mismos de dp-front.yaml (el backend referencia front-service).
+deploymentName: front-deploy
+
+replicaCount: 1
+
+image:
+  repository: jpcc141999/front4
+  # Fija un tag real en cuanto exista; "latest" puede traer otra versión en cada redeploy.
+  tag: latest
+  pullPolicy: IfNotPresent
+
+containerPort: 3000
+
+service:
+  name: front-service
+  type: NodePort
+  port: 3000
+  nodePort: 32000   # vacío = Kubernetes asigna uno
+
+extraEnv: []
+
+readinessProbe:
+  enabled: true   # tcpSocket
+
+resources: {}

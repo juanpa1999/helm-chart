@@ -1,0 +1,6 @@
+apiVersion: v2
+name: db
+description: PostgreSQL (imagen jpcc141999/db1) para la app de monitoreo de sensores
+type: application
+version: 0.1.0
+appVersion: "latest"

@@ -1,0 +1,49 @@
+{{- if not (has .Values.migrations.mode (list "job" "initContainer" "none")) }}
+{{- fail "migrations.mode debe ser job, initContainer o none" }}
+{{- end }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deploymentName }}
+  labels:
+    app: back
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: back
+  template:
+    metadata:
+      labels:
+        app: back
+    spec:
+      {{- if or .Values.waitForDb.enabled (eq .Values.migrations.mode "initContainer") }}
+      initContainers:
+        {{- if .Values.waitForDb.enabled }}
+        {{- include "backend.waitForDb" . | nindent 8 }}
+        {{- end }}
+        {{- if eq .Values.migrations.mode "initContainer" }}
+        {{- include "backend.migrateContainer" . | nindent 8 }}
+        {{- end }}
+      {{- end }}
+      containers:
+        - name: back
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.containerPort }}
+          env:
+            {{- include "backend.env" . | nindent 12 }}
+          {{- if .Values.readinessProbe.enabled }}
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.containerPort }}
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}

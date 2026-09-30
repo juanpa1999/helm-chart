@@ -1,0 +1,31 @@
+{{- if eq .Values.migrations.mode "job" }}
+# Corre `alembic upgrade head` después de cada helm install/upgrade.
+# ArgoCD traduce estos hooks a PostSync.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Values.deploymentName }}-migrate
+  labels:
+    app: back-migrate
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "0"
+    # Borra el Job anterior antes de crear uno nuevo y lo limpia si termina bien;
+    # si falla se queda para poder ver los logs (kubectl logs job/<nombre>).
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: {{ .Values.migrations.backoffLimit }}
+  activeDeadlineSeconds: {{ .Values.migrations.activeDeadlineSeconds }}
+  template:
+    metadata:
+      labels:
+        app: back-migrate
+    spec:
+      restartPolicy: OnFailure
+      {{- if .Values.waitForDb.enabled }}
+      initContainers:
+        {{- include "backend.waitForDb" . | nindent 8 }}
+      {{- end }}
+      containers:
+        {{- include "backend.migrateContainer" . | nindent 8 }}
+{{- end }}
