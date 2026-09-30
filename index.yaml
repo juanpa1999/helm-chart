@@ -10,7 +10,7 @@ entries:
     name: backend
     type: application
     urls:
-    - https://juanpa1999.github.io/helm-charts/charts/backend-0.1.0.tgz
+    - https://juanpa1999.github.io/helm-chart/charts/backend-0.1.0.tgz
     version: 0.1.0
   db:
   - apiVersion: v2
@@ -21,7 +21,7 @@ entries:
     name: db
     type: application
     urls:
-    - https://juanpa1999.github.io/helm-charts/charts/db-0.1.0.tgz
+    - https://juanpa1999.github.io/helm-chart/charts/db-0.1.0.tgz
     version: 0.1.0
   frontend:
   - apiVersion: v2
@@ -32,6 +32,6 @@ entries:
     name: frontend
     type: application
     urls:
-    - https://juanpa1999.github.io/helm-charts/charts/frontend-0.1.0.tgz
+    - https://juanpa1999.github.io/helm-chart/charts/frontend-0.1.0.tgz
     version: 0.1.0
 generated: "2026-09-30T16:51:42.713816-05:00"
