@@ -27,6 +27,8 @@ db:
 extraEnv:
   - name: NGROK
     value: front-service
+  - name: DB_PASSWORD
+    value: "123456789"
 
 # Imagen usada solo para correr pg_isready antes de arrancar/migrar.
 waitForDb:
@@ -44,9 +46,9 @@ migrations:
   mode: job
   command: ["alembic", "upgrade", "head"]
   backoffLimit: 3
-  activeDeadlineSeconds: 600
+  activeDeadlineSeconds: 200
 
 readinessProbe:
-  enabled: true   # tcpSocket: no conocemos un endpoint /health real en la imagen back3
+  enabled: false   # tcpSocket: no conocemos un endpoint /health real en la imagen back3
 
 resources: {}

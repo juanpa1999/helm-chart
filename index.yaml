@@ -3,7 +3,18 @@ entries:
   backend:
   - apiVersion: v2
     appVersion: latest
-    created: "2026-09-30T16:51:42.714449-05:00"
+    created: "2026-09-30T18:49:20.259365-05:00"
+    description: Backend (imagen jpcc141999/back3) de la app de monitoreo de sensores,
+      con migraciones Alembic
+    digest: 30133e04659788c4c44006bbe0a18ecb27ebaeb6b5c082b471972531c77e654b
+    name: backend
+    type: application
+    urls:
+    - https://juanpa1999.github.io/helm-chart/charts/backend-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: latest
+    created: "2026-09-30T18:49:20.259053-05:00"
     description: Backend (imagen jpcc141999/back3) de la app de monitoreo de sensores,
       con migraciones Alembic
     digest: 7fbd92e531b097eafe10ca220217389064fa1db2d99460b3cd3b38745477bb33
@@ -15,7 +26,7 @@ entries:
   db:
   - apiVersion: v2
     appVersion: latest
-    created: "2026-09-30T16:51:42.714818-05:00"
+    created: "2026-09-30T18:49:20.259919-05:00"
     description: PostgreSQL (imagen jpcc141999/db1) para la app de monitoreo de sensores
     digest: 7f2a98cec4a02f21dd176b70c847687c23def1c0751775b6ecaf15fd46ae5359
     name: db
@@ -26,7 +37,7 @@ entries:
   frontend:
   - apiVersion: v2
     appVersion: latest
-    created: "2026-09-30T16:51:42.715108-05:00"
+    created: "2026-09-30T18:49:20.260341-05:00"
     description: Frontend (imagen jpcc141999/front4) de la app de monitoreo de sensores
     digest: fb3e79bdee6ef9196bd07d4ba38d8b5efb0ab16a8d40e9cf560bb84cf188a502
     name: frontend
@@ -34,4 +45,4 @@ entries:
     urls:
     - https://juanpa1999.github.io/helm-chart/charts/frontend-0.1.0.tgz
     version: 0.1.0
-generated: "2026-09-30T16:51:42.713816-05:00"
+generated: "2026-09-30T18:49:20.258008-05:00"
