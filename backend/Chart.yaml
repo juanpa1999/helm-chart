@@ -2,5 +2,5 @@ apiVersion: v2
 name: backend
 description: Backend (imagen jpcc141999/back3) de la app de monitoreo de sensores, con migraciones Alembic
 type: application
-version: 0.2.0
+version: 0.3.0
 appVersion: "latest"

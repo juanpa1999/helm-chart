@@ -1,0 +1,13 @@
+{{- if .Values.backend.stripPrefix }}
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ .Release.Name }}-strip-api
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+spec:
+  stripPrefix:
+    prefixes:
+      - {{ .Values.backend.path }}
+{{- end }}

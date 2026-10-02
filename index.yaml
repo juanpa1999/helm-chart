@@ -3,7 +3,18 @@ entries:
   backend:
   - apiVersion: v2
     appVersion: latest
-    created: "2026-09-30T18:49:20.259365-05:00"
+    created: "2026-10-01T21:26:10.460446-05:00"
+    description: Backend (imagen jpcc141999/back3) de la app de monitoreo de sensores,
+      con migraciones Alembic
+    digest: 7b1d3924078603d0414aa87f6e45032050ab0d328533676d6ff6a8d7f5f085d6
+    name: backend
+    type: application
+    urls:
+    - https://juanpa1999.github.io/helm-chart/charts/backend-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v2
+    appVersion: latest
+    created: "2026-10-01T21:26:10.460146-05:00"
     description: Backend (imagen jpcc141999/back3) de la app de monitoreo de sensores,
       con migraciones Alembic
     digest: 30133e04659788c4c44006bbe0a18ecb27ebaeb6b5c082b471972531c77e654b
@@ -14,7 +25,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: latest
-    created: "2026-09-30T18:49:20.259053-05:00"
+    created: "2026-10-01T21:26:10.459447-05:00"
     description: Backend (imagen jpcc141999/back3) de la app de monitoreo de sensores,
       con migraciones Alembic
     digest: 7fbd92e531b097eafe10ca220217389064fa1db2d99460b3cd3b38745477bb33
@@ -26,7 +37,7 @@ entries:
   db:
   - apiVersion: v2
     appVersion: latest
-    created: "2026-09-30T18:49:20.259919-05:00"
+    created: "2026-10-01T21:26:10.460761-05:00"
     description: PostgreSQL (imagen jpcc141999/db1) para la app de monitoreo de sensores
     digest: 7f2a98cec4a02f21dd176b70c847687c23def1c0751775b6ecaf15fd46ae5359
     name: db
@@ -37,7 +48,17 @@ entries:
   frontend:
   - apiVersion: v2
     appVersion: latest
-    created: "2026-09-30T18:49:20.260341-05:00"
+    created: "2026-10-01T21:26:10.461238-05:00"
+    description: Frontend (imagen jpcc141999/front4) de la app de monitoreo de sensores
+    digest: 69bcefd2075907a2895f117e4e65ef1bb04a20a555b752142d72cf2ae46e9c63
+    name: frontend
+    type: application
+    urls:
+    - https://juanpa1999.github.io/helm-chart/charts/frontend-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: latest
+    created: "2026-10-01T21:26:10.461053-05:00"
     description: Frontend (imagen jpcc141999/front4) de la app de monitoreo de sensores
     digest: fb3e79bdee6ef9196bd07d4ba38d8b5efb0ab16a8d40e9cf560bb84cf188a502
     name: frontend
@@ -45,4 +66,15 @@ entries:
     urls:
     - https://juanpa1999.github.io/helm-chart/charts/frontend-0.1.0.tgz
     version: 0.1.0
-generated: "2026-09-30T18:49:20.258008-05:00"
+  ingress:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2026-10-01T21:26:10.461405-05:00"
+    description: Ingress (Traefik de k3s) para frontend + backend de la app de sensores
+    digest: 8f1b83679a16969e43c4c0bfdf1e908f458c00668a50de1b90f5bfc91a3bb815
+    name: ingress
+    type: application
+    urls:
+    - https://juanpa1999.github.io/helm-chart/charts/ingress-0.1.0.tgz
+    version: 0.1.0
+generated: "2026-10-01T21:26:10.458817-05:00"

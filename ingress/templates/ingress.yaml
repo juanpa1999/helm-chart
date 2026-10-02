@@ -1,0 +1,51 @@
+# Dos Ingress porque el Middleware de Traefik se aplica por Ingress (anotación), no por path:
+# así StripPrefix solo afecta a /api y no al frontend.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-backend
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+  {{- if .Values.backend.stripPrefix }}
+  annotations:
+    traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-{{ .Release.Name }}-strip-api@kubernetescrd
+  {{- end }}
+spec:
+  ingressClassName: {{ .Values.ingressClassName }}
+  rules:
+    - {{- with .Values.host }}
+      host: {{ . }}
+      {{- end }}
+      http:
+        paths:
+          - path: {{ .Values.backend.path }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.backend.serviceName }}
+                port:
+                  number: {{ .Values.backend.servicePort }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-frontend
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+spec:
+  ingressClassName: {{ .Values.ingressClassName }}
+  rules:
+    - {{- with .Values.host }}
+      host: {{ . }}
+      {{- end }}
+      http:
+        paths:
+          - path: {{ .Values.frontend.path }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.frontend.serviceName }}
+                port:
+                  number: {{ .Values.frontend.servicePort }}

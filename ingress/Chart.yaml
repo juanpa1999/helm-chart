@@ -1,0 +1,6 @@
+apiVersion: v2
+name: ingress
+description: Ingress (Traefik de k3s) para frontend + backend de la app de sensores
+type: application
+version: 0.1.0
+appVersion: "latest"

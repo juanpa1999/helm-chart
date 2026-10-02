@@ -2,5 +2,5 @@ apiVersion: v2
 name: frontend
 description: Frontend (imagen jpcc141999/front4) de la app de monitoreo de sensores
 type: application
-version: 0.1.0
+version: 0.2.0
 appVersion: "latest"

@@ -11,11 +11,13 @@ image:
 
 containerPort: 8000
 
+# ClusterIP: el acceso externo es por el Ingress (../ingress, path /api). Para exponerlo
+# directo sin Ingress: type: NodePort y nodePort: 32001.
 service:
   name: back-service
-  type: NodePort
+  type: ClusterIP
   port: 8000
-  nodePort: 32001   # vacío = Kubernetes asigna uno
+  nodePort: ""   # solo aplica con type: NodePort; vacío = Kubernetes asigna uno
 
 # Nombre del Service de ../db. Se usa como DB_HOST y para esperar a que la DB responda.
 # No está linkeado automáticamente con el chart db: si cambias service.name allá, cámbialo acá.
@@ -24,11 +26,13 @@ db:
   port: 5432
 
 # Variables extra del contenedor (se aplican también al Job de migración).
+# NGROK es el origin extra que main.py agrega a la lista de CORS: debe ser el origin
+# del frontend tal como lo ve el navegador (esquema + host, sin "/" final).
 extraEnv:
   - name: NGROK
-    value: front-service
+    value: http://pablodevops.store
   - name: DB_PASSWORD
-    value: "123456789"
+    value: "123"
 
 # Imagen usada solo para correr pg_isready antes de arrancar/migrar.
 waitForDb:
