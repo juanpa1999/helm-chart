@@ -15,3 +15,6 @@ helm install front ak8s/frontend
 kubectl exec -i deploy/db-deployment -- psql -U postgres -d postgres -v ON_ERROR_STOP=1 < sql/seed_pablodevops.sql
 
 #user: pablodevops pass: Test123456789*
+
+
+#do the portforwart for boths services, back in 8000 and front in 3000 in localhost, so you can test the app in your browser.
