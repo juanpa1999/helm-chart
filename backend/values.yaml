@@ -30,7 +30,7 @@ db:
 # del frontend tal como lo ve el navegador (esquema + host, sin "/" final).
 extraEnv:
   - name: NGROK
-    value: http://pablodevops.store:9100
+    value: http://pablodevops.store
   - name: DB_PASSWORD
     value: "123"
 

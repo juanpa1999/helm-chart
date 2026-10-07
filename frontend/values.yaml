@@ -24,7 +24,7 @@ service:
 # Debe ser <host del Ingress> + backend.path de ../ingress.
 extraEnv:
   - name: REACT_APP_API_URL
-    value: http://pablodevops.store:9100/api
+    value: http://pablodevops.store/api
 
 readinessProbe:
   enabled: true   # tcpSocket

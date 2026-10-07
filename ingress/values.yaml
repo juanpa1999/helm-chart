@@ -4,7 +4,7 @@ ingressClassName: traefik
 # Host del Ingress. Vacío = acepta cualquier Host.
 # Debe coincidir con REACT_APP_API_URL (../frontend) y con el origin CORS (NGROK en ../backend).
 # En local (k3d) resuelve con /etc/hosts: 127.0.0.1 pablodevops.store
-host: pablodevops.store:9100
+host: pablodevops.store
 
 # /api/* -> backend. El backend no tiene prefijo /api en sus rutas (/auth, /admin, ...),
 # así que un Middleware de Traefik (StripPrefix) quita /api antes de reenviar.
