@@ -17,7 +17,7 @@ service:
   name: back-service
   type: ClusterIP
   port: 8000
-  nodePort: ""   # solo aplica con type: NodePort; vacío = Kubernetes asigna uno
+  nodePort: "" # solo aplica con type: NodePort; vacío = Kubernetes asigna uno
 
 # Nombre del Service de ../db. Se usa como DB_HOST y para esperar a que la DB responda.
 # No está linkeado automáticamente con el chart db: si cambias service.name allá, cámbialo acá.
@@ -36,8 +36,8 @@ db:
 # NGROK es el origin extra que main.py agrega a la lista de CORS: debe ser el origin
 # del frontend tal como lo ve el navegador (esquema + host, sin "/" final).
 extraEnv:
-  - name: NGROK
-    value: http://pablodevops.store
+- name: NGROK
+  value: http://localhost
 
 # Imagen usada solo para correr pg_isready antes de arrancar/migrar.
 waitForDb:
@@ -53,11 +53,11 @@ waitForDb:
 #                     kubectl exec deploy/back-deployment -- alembic upgrade head
 migrations:
   mode: job
-  command: ["alembic", "upgrade", "head"]
+  command: [ "alembic", "upgrade", "head" ]
   backoffLimit: 3
   activeDeadlineSeconds: 200
 
 readinessProbe:
-  enabled: false   # tcpSocket: no conocemos un endpoint /health real en la imagen back3
+  enabled: false # tcpSocket: no conocemos un endpoint /health real en la imagen back3
 
 resources: {}
