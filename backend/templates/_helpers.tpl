@@ -2,6 +2,15 @@
 {{- define "backend.env" -}}
 - name: DB_HOST
   value: {{ .Values.db.host | quote }}
+{{- with .Values.db.passwordSecret }}
+{{- if .name }}
+- name: DB_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ .name | quote }}
+      key: {{ .key | quote }}
+{{- end }}
+{{- end }}
 {{- with .Values.extraEnv }}
 {{ toYaml . }}
 {{- end }}

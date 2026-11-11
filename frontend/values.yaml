@@ -11,6 +11,13 @@ image:
 
 containerPort: 3000
 
+# Pull secret (kubernetes.io/dockerconfigjson) para la imagen privada de Docker Hub.
+# No lo crea este chart: lo genera External Secrets Operator desde Key Vault
+# (vault-secrets-deployment/terraform/external-secret-docker-token.yaml) y debe
+# existir en el mismo namespace. [] = sin pull secret (imagen pública).
+imagePullSecrets:
+  - name: docker-registry-secret
+
 # ClusterIP: el acceso externo es por el Ingress (../ingress). Para exponerlo directo
 # sin Ingress: type: NodePort y nodePort: 32000.
 service:

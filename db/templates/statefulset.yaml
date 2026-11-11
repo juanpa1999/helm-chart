@@ -1,18 +1,16 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: {{ .Values.deploymentName }}
+  name: {{ .Values.statefulsetName }}
   labels:
     app: db
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 spec:
+  # Service "gobernante" del StatefulSet (headless, ver service.yaml).
+  serviceName: {{ .Values.service.name }}
+  # Una sola instancia: sin replicación, el PVC es ReadWriteOnce.
   replicas: 1
-  {{- if .Values.persistence.enabled }}
-  # Un PVC ReadWriteOnce no se puede montar en dos pods a la vez durante un rolling update.
-  strategy:
-    type: Recreate
-  {{- end }}
   selector:
     matchLabels:
       app: db
@@ -49,12 +47,12 @@ spec:
             - name: PGDATA
               value: {{ .Values.persistence.mountPath }}/pgdata
           volumeMounts:
-            - name: data
+            - name: postgres-storage
               mountPath: {{ .Values.persistence.mountPath }}
           {{- end }}
       {{- if .Values.persistence.enabled }}
       volumes:
-        - name: data
+        - name: postgres-storage
           persistentVolumeClaim:
-            claimName: {{ .Values.deploymentName }}-data
+            claimName: {{ include "db.pvcName" . }}
       {{- end }}

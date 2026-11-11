@@ -24,6 +24,13 @@ service:
 db:
   host: db-service
   port: 5432
+  # DB_PASSWORD sale de un Secret que NO crea este chart: lo genera External Secrets
+  # Operator desde Key Vault (vault-secrets-deployment/terraform/external-secret-db.yaml).
+  # Debe existir en el mismo namespace antes de instalar, o el pod y el Job de migración
+  # quedan en CreateContainerConfigError.
+  passwordSecret:
+    name: db-secret
+    key: DB_PASSWORD
 
 # Variables extra del contenedor (se aplican también al Job de migración).
 # NGROK es el origin extra que main.py agrega a la lista de CORS: debe ser el origin
@@ -31,8 +38,6 @@ db:
 extraEnv:
   - name: NGROK
     value: http://pablodevops.store
-  - name: DB_PASSWORD
-    value: "123"
 
 # Imagen usada solo para correr pg_isready antes de arrancar/migrar.
 waitForDb:

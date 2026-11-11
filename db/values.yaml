@@ -1,6 +1,6 @@
-# Los nombres por defecto son los mismos de dp-db.yaml, para que el backend
-# (DB_HOST=db-service) y up.sh (deploy/db-deployment) sigan funcionando.
-deploymentName: db-deployment
+# Los nombres por defecto son los mismos de st-db.yaml (AK8s-kubernetes-local-deployment),
+# para que el backend (DB_HOST=db-service) y up.sh (statefulset/db-statefulset) sigan funcionando.
+statefulsetName: db-statefulset
 
 image:
   repository: jpcc141999/db1
@@ -14,6 +14,9 @@ service:
   name: db-service
   type: ClusterIP
   port: 5432
+  # Headless (clusterIP: None), como en st-db.yaml. Ojo: clusterIP es inmutable; si ya
+  # existe un db-service con ClusterIP normal, hay que borrarlo antes del upgrade.
+  headless: true
 
 # Las credenciales viven dentro de la imagen db1; pg_isready no necesita password.
 readinessProbe:
@@ -21,12 +24,13 @@ readinessProbe:
   user: postgres
   database: postgres
 
-# Desactivado = mismo comportamiento que dp-db.yaml (los datos se pierden si el pod
-# se reinicia). Actívalo para que la DB sobreviva reinicios del pod.
+# Activado = los datos sobreviven reinicios del pod (equivale a pvc_postgres.yml).
+# El PVC se crea con helm.sh/resource-policy: keep, así que sobrevive a helm uninstall.
 persistence:
-  enabled: false
+  enabled: true
+  claimName: ""                 # vacío = <statefulsetName>-data
   size: 1Gi
-  storageClass: ""        # vacío = storageClass por defecto del cluster
+  storageClass: local-path      # default de k3s/k3d; vacío = storageClass por defecto del cluster
   mountPath: /var/lib/postgresql/data
 
 resources: {}

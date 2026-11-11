@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ .Values.deploymentName }}-data
+  name: {{ include "db.pvcName" . }}
   labels:
     app: db
   annotations:
