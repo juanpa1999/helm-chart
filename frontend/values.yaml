@@ -26,12 +26,12 @@ service:
   port: 3000
   nodePort: "" # solo aplica con type: NodePort; vacío = Kubernetes asigna uno
 
-# La imagen trae REACT_APP_API_URL=http://localhost:8000 en su .env; la variable de
+# La imagen trae REACT_APP_API_URL=http://pablodevops.store:8000 en su .env; la variable de
 # entorno tiene prioridad (react-scripts start la lee al arrancar).
 # Debe ser <host del Ingress> + backend.path de ../ingress.
 extraEnv:
 - name: REACT_APP_API_URL
-  value: http://localhost/api
+  value: http://pablodevops.store/api
 
 readinessProbe:
   enabled: true # tcpSocket

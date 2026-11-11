@@ -146,7 +146,7 @@ served under **one host**, `pablodevops.store`:
 
 Two steps are needed to reach it from your machine.
 
-### 1. Point the host to localhost (`/etc/hosts`)
+### 1. Point the host to pablodevops.store (`/etc/hosts`)
 
 The Ingress only matches requests whose `Host` header is `pablodevops.store`, so your
 machine must resolve that name to `127.0.0.1`. Add this line to the hosts file:
@@ -191,7 +191,7 @@ Leave it running (Ctrl+C stops it) and open <http://pablodevops.store>.
   (`sudo lsof -iTCP:80 -sTCP:LISTEN`).
 
 **Alternative with k3d (no port-forward):** create the cluster mapping port 80 of the
-load balancer to your host, and Traefik is reachable directly on `localhost:80`:
+load balancer to your host, and Traefik is reachable directly on `pablodevops.store:80`:
 
 ```bash
 k3d cluster create sensores -p "80:80@loadbalancer"

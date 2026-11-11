@@ -115,9 +115,9 @@ helm list -n "$NAMESPACE"
 cat <<EOF
 
 Test user: pablodevops (role master; the seed only stores its bcrypt hash)
-Access:    add '127.0.0.1 localhost' to /etc/hosts, then
+Access:    add '127.0.0.1 pablodevops.store' to /etc/hosts, then
            kubectl -n kube-system port-forward svc/traefik 80:80
-           and open http://localhost
+           and open http://pablodevops.store
 EOF
 
 if $PORT_FORWARD; then

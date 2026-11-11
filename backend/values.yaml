@@ -37,7 +37,7 @@ db:
 # del frontend tal como lo ve el navegador (esquema + host, sin "/" final).
 extraEnv:
 - name: NGROK
-  value: http://localhost
+  value: http://pablodevops.store
 
 # Imagen usada solo para correr pg_isready antes de arrancar/migrar.
 waitForDb:
