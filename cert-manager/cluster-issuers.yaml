@@ -1,0 +1,41 @@
+# ClusterIssuers de Let's Encrypt para cert-manager (validación HTTP-01 vía Traefik).
+# No es un chart: son recursos cluster-wide que se aplican una vez, después de instalar
+# cert-manager:
+#
+#   helm upgrade --install cert-manager oci://quay.io/jetstack/charts/cert-manager \
+#     --version v1.21.3 --namespace cert-manager --create-namespace --set crds.enabled=true
+#   kubectl apply -f cert-manager/cluster-issuers.yaml
+#
+# HTTP-01 exige que Let's Encrypt llegue desde internet a http://<host>:80 (registro A
+# público + port forward del router hacia Traefik).
+# Usa staging hasta que el Certificate quede Ready, luego cambia el chart ingress a
+# tls.issuer.name=letsencrypt-prod (staging emite certs no confiables pero sin rate limits).
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging
+spec:
+  acme:
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    email: jpcc141999@gmail.com # avisos de expiración de Let's Encrypt
+    privateKeySecretRef:
+      name: letsencrypt-staging-account-key
+    solvers:
+      - http01:
+          ingress:
+            ingressClassName: traefik
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: jpcc141999@gmail.com # avisos de expiración de Let's Encrypt
+    privateKeySecretRef:
+      name: letsencrypt-prod-account-key
+    solvers:
+      - http01:
+          ingress:
+            ingressClassName: traefik

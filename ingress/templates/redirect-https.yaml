@@ -1,0 +1,41 @@
+{{- if and .Values.tls.enabled .Values.tls.redirectHttps }}
+# Con tls, los Ingress principales solo escuchan en websecure (:443). Este Ingress atiende
+# el entrypoint web (:80) y redirige a https. Las reglas más largas (el challenge HTTP-01
+# de cert-manager) tienen más prioridad en Traefik, así que no las intercepta.
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ .Release.Name }}-redirect-https
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-http-redirect
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+    traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-{{ .Release.Name }}-redirect-https@kubernetescrd
+spec:
+  ingressClassName: {{ .Values.ingressClassName }}
+  rules:
+    - host: {{ .Values.host }}
+      http:
+        paths:
+          # El backend de una regla que solo redirige no se usa, pero Ingress lo exige.
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.frontend.serviceName }}
+                port:
+                  number: {{ .Values.frontend.servicePort }}
+{{- end }}

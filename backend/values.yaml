@@ -35,9 +35,10 @@ db:
 # Variables extra del contenedor (se aplican también al Job de migración).
 # NGROK es el origin extra que main.py agrega a la lista de CORS: debe ser el origin
 # del frontend tal como lo ve el navegador (esquema + host, sin "/" final).
+# https porque el Ingress tiene TLS: el origin cambia de esquema y CORS lo compara exacto.
 extraEnv:
 - name: NGROK
-  value: http://pablodevops.store
+  value: https://pablodevops.store
 
 # Imagen usada solo para correr pg_isready antes de arrancar/migrar.
 waitForDb:

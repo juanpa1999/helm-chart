@@ -1,5 +1,7 @@
 # Dos Ingress porque el Middleware de Traefik se aplica por Ingress (anotación), no por path:
 # así StripPrefix solo afecta a /api y no al frontend.
+# Con tls.enabled ambos escuchan solo en websecure (:443) con el Secret de certificate.yaml;
+# el :80 lo atiende redirect-https.yaml.
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -7,12 +9,24 @@ metadata:
   labels:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
-  {{- if .Values.backend.stripPrefix }}
+  {{- if or .Values.backend.stripPrefix .Values.tls.enabled }}
   annotations:
+    {{- if .Values.backend.stripPrefix }}
     traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-{{ .Release.Name }}-strip-api@kubernetescrd
+    {{- end }}
+    {{- if .Values.tls.enabled }}
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    {{- end }}
   {{- end }}
 spec:
   ingressClassName: {{ .Values.ingressClassName }}
+  {{- if .Values.tls.enabled }}
+  tls:
+    - hosts:
+        - {{ .Values.host }}
+      secretName: {{ .Values.tls.secretName }}
+  {{- end }}
   rules:
     - {{- with .Values.host }}
       host: {{ . }}
@@ -34,8 +48,19 @@ metadata:
   labels:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+  {{- if .Values.tls.enabled }}
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  {{- end }}
 spec:
   ingressClassName: {{ .Values.ingressClassName }}
+  {{- if .Values.tls.enabled }}
+  tls:
+    - hosts:
+        - {{ .Values.host }}
+      secretName: {{ .Values.tls.secretName }}
+  {{- end }}
   rules:
     - {{- with .Values.host }}
       host: {{ . }}

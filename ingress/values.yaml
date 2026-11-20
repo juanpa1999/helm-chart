@@ -20,3 +20,22 @@ frontend:
   path: /
   serviceName: front-service # ../frontend -> service.name
   servicePort: 3000
+
+# HTTPS con cert-manager + Let's Encrypt (HTTP-01). Requiere cert-manager instalado y el
+# ClusterIssuer de ../cert-manager/cluster-issuers.yaml aplicado. Si se activa, cambia a
+# https:// también REACT_APP_API_URL (../frontend) y NGROK (../backend).
+tls:
+  enabled: true
+  # Secret donde cert-manager guarda el certificado (lo comparten los dos Ingress).
+  secretName: pablodevops-store-tls
+  # Se crea un Certificate explícito en vez de la anotación cert-manager.io/cluster-issuer:
+  # con dos Ingress del mismo host, la anotación generaría dos Certificate para un Secret.
+  issuer:
+    # letsencrypt-prod = cert confiable por los navegadores. Para pruebas usa
+    # letsencrypt-staging (cert no confiable, sin rate limits de producción).
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  # Ingress extra en el entrypoint "web" (:80) que redirige todo a https (308).
+  # El challenge HTTP-01 de cert-manager sigue funcionando: es un Ingress propio con una
+  # regla más específica (/.well-known/acme-challenge/<token>), que Traefik prioriza.
+  redirectHttps: true

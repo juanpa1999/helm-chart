@@ -1,0 +1,20 @@
+{{- if .Values.tls.enabled }}
+{{- if not .Values.host }}
+{{- fail "tls.enabled requiere host (Let's Encrypt no emite certificados sin nombre)" }}
+{{- end }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .Release.Name }}-tls
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+spec:
+  secretName: {{ .Values.tls.secretName }}
+  dnsNames:
+    - {{ .Values.host }}
+  issuerRef:
+    name: {{ .Values.tls.issuer.name }}
+    kind: {{ .Values.tls.issuer.kind }}
+    group: cert-manager.io
+{{- end }}

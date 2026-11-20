@@ -28,10 +28,11 @@ service:
 
 # La imagen trae REACT_APP_API_URL=http://pablodevops.store:8000 en su .env; la variable de
 # entorno tiene prioridad (react-scripts start la lee al arrancar).
-# Debe ser <host del Ingress> + backend.path de ../ingress.
+# Debe ser <esquema>://<host del Ingress> + backend.path de ../ingress. https porque el
+# Ingress tiene TLS (cert-manager): con http el navegador bloquea las llamadas (mixed content).
 extraEnv:
 - name: REACT_APP_API_URL
-  value: http://pablodevops.store/api
+  value: https://pablodevops.store/api
 
 readinessProbe:
   enabled: true # tcpSocket
