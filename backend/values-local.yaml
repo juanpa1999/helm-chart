@@ -1,0 +1,8 @@
+# Overrides para despliegue LOCAL (k3d + ArgoCD local): el Ingress local no tiene TLS
+# (ingress/values-local.yaml), así que el origin del frontend es http:// y CORS lo compara exacto.
+#   helm:  helm upgrade --install backend ./backend -f backend/values-local.yaml
+#   Argo:  valueFiles: [$values/backend/values-local.yaml]
+
+extraEnv:
+- name: NGROK
+  value: http://pablodevops.store

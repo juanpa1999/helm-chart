@@ -1,0 +1,12 @@
+# Overrides para despliegue LOCAL (k3d + ArgoCD local): sin TLS ni cert-manager.
+# Se aplica encima de values.yaml del chart (que queda con TLS para el cluster AKS).
+#   helm:  helm upgrade --install ingress ./ingress -f ingress/values-local.yaml
+#   Argo:  valueFiles: [$values/ingress/values-local.yaml]
+# Con TLS apagado no se crean Certificate ni redirect a https, y los Ingress escuchan en :80.
+# Debe ir de la mano con frontend/values-local.yaml y backend/values-local.yaml (http://).
+
+host: pablodevops.store
+
+tls:
+  enabled: false
+  redirectHttps: false

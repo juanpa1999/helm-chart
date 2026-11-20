@@ -13,6 +13,8 @@
 # Secrets db-secret + docker-registry-secret (ExternalSecrets from vault-secrets-deployment).
 set -euo pipefail
 
+cd ~/Documents/personal/DevOps_graduation/gitops/local_test_and_repos/vault-secrets-deployment/terraform && eval "$(terraform output -raw apply_external_secret_command)" && eval "$(terraform output -raw apply_external_secret_command_docker_token)"
+
 REPO_NAME="pablo-charts"
 REPO_URL="https://juanpa1999.github.io/helm-chart"
 NAMESPACE="${NAMESPACE:-default}"

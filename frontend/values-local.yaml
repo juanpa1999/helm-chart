@@ -1,0 +1,9 @@
+# Overrides para despliegue LOCAL (k3d + ArgoCD local): el Ingress local no tiene TLS
+# (ingress/values-local.yaml), así que la API va por http://. Con https el navegador no
+# llegaría al backend.
+#   helm:  helm upgrade --install frontend ./frontend -f frontend/values-local.yaml
+#   Argo:  valueFiles: [$values/frontend/values-local.yaml]
+
+extraEnv:
+- name: REACT_APP_API_URL
+  value: http://pablodevops.store/api
