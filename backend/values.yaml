@@ -44,6 +44,14 @@ extraEnv:
 waitForDb:
   enabled: true
   image: postgres:16-alpine
+  # Solo corre pg_isready en un loop: casi no consume.
+  resources:
+    requests:
+      cpu: 10m
+      memory: 16Mi
+    limits:
+      cpu: 100m
+      memory: 32Mi
 
 # Cómo correr `alembic upgrade head`:
 #   job            -> Job como hook de Helm post-install/post-upgrade (recomendado).
@@ -57,8 +65,26 @@ migrations:
   command: [ "alembic", "upgrade", "head" ]
   backoffLimit: 3
   activeDeadlineSeconds: 200
+  # Misma imagen que el backend corriendo alembic (corto, pero carga SQLAlchemy y los modelos).
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
 
 readinessProbe:
   enabled: false # tcpSocket: no conocemos un endpoint /health real en la imagen back3
 
-resources: {}
+# Medido en k3d (Prometheus, container_memory_working_set_bytes): ~125Mi estable.
+# requests = lo que el scheduler reserva en el nodo; limits = techo duro.
+#   memoria > limit -> el kernel mata el contenedor (OOMKilled) y se reinicia.
+#   CPU > limit     -> no lo mata, lo frena (throttling): responde más lento.
+resources:
+  requests:
+    cpu: 50m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 384Mi

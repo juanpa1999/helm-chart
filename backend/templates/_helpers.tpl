@@ -24,6 +24,10 @@
     - sh
     - -c
     - until pg_isready -h {{ .Values.db.host }} -p {{ .Values.db.port }}; do echo "waiting for db..."; sleep 2; done
+  {{- with .Values.waitForDb.resources }}
+  resources:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 {{- end }}
 
 {{/* Contenedor que corre la migración (Job o initContainer). */}}
@@ -35,4 +39,8 @@
     {{- toYaml .Values.migrations.command | nindent 4 }}
   env:
     {{- include "backend.env" . | nindent 4 }}
+  {{- with .Values.migrations.resources }}
+  resources:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 {{- end }}

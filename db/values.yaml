@@ -33,4 +33,14 @@ persistence:
   storageClass: local-path      # default de k3s/k3d; vacío = storageClass por defecto del cluster
   mountPath: /var/lib/postgresql/data
 
-resources: {}
+# Medido en k3d: ~103Mi y picos de ~56m CPU. Postgres reserva shared_buffers (128MB
+# por defecto) + memoria por conexión y por consulta (work_mem): el limit deja margen.
+#   memoria > limit -> OOMKilled: Postgres se reinicia y aborta las transacciones abiertas.
+#   CPU > limit     -> throttling: consultas más lentas.
+resources:
+  requests:
+    cpu: 50m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi

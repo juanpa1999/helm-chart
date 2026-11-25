@@ -37,4 +37,15 @@ extraEnv:
 readinessProbe:
   enabled: true # tcpSocket
 
-resources: {}
+# Medido en k3d: ~475-505Mi estable. Es alto porque la imagen corre `npm start`
+# (servidor de desarrollo de React con webpack), no un build estático; al arrancar
+# compila todo y usa bastante CPU. Con una imagen de producción (build + nginx)
+# bastaría con ~32Mi / 50m.
+#   memoria > limit -> OOMKilled; CPU > limit -> throttling (solo arranca más lento).
+resources:
+  requests:
+    cpu: 100m
+    memory: 512Mi
+  limits:
+    cpu: "1"
+    memory: 1Gi
