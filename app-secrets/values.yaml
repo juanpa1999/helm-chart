@@ -1,0 +1,35 @@
+# En AKS estos valores vienen de argocd/aks/global-values.yaml (salida de
+# `terraform output -raw gitops_global_values`). Ninguno es secreto: los valores
+# reales viven solo en Key Vault y los copia External Secrets Operator.
+global:
+  azure:
+    tenantId: ""
+    keyVaultUrl: ""
+    esoClientId: ""
+
+# El federated credential confía SOLO en system:serviceaccount:<namespace>:<name>
+# (var.app_namespace / var.eso_service_account_name en terraform/azure/application).
+# Si cambias el nombre o el namespace de la Application, cámbialo también allá.
+serviceAccount:
+  name: eso-keyvault
+
+secretStore:
+  name: azure-keyvault
+
+# Cada cuánto ESO relee Key Vault. Los pods leen los Secrets como env vars al
+# arrancar: un cambio en Key Vault no llega a un pod que ya corre hasta un
+# rollout restart.
+refreshInterval: 1h
+
+# db-secret (clave DB_PASSWORD) -> chart backend (db.passwordSecret).
+db:
+  secretName: db-secret
+  secretKey: DB_PASSWORD
+  keyVaultSecret: db-password
+
+# docker-registry-secret (dockerconfigjson) -> chart frontend (imagePullSecrets).
+dockerRegistry:
+  secretName: docker-registry-secret
+  keyVaultSecret: docker-registry-token
+  server: https://index.docker.io/v1/
+  username: jpcc141999

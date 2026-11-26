@@ -1,0 +1,15 @@
+# En AKS el email viene de argocd/aks/global-values.yaml (global.letsencryptEmail).
+# Let's Encrypt manda aquí los avisos de expiración.
+global:
+  letsencryptEmail: ""
+
+# IngressClass del Ingress temporal que crea cert-manager para el challenge HTTP-01.
+ingressClassName: traefik
+
+# staging: certs no confiables pero sin rate limits, para probar el flujo.
+# prod: certs confiables (límite de 5 certificados idénticos por semana).
+issuers:
+  letsencrypt-staging:
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+  letsencrypt-prod:
+    server: https://acme-v02.api.letsencrypt.org/directory

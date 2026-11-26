@@ -1,9 +1,21 @@
 apiVersion: v1
 entries:
+  app-secrets:
+  - apiVersion: v2
+    created: "2026-11-26T10:21:34.435643-05:00"
+    description: ServiceAccount federado + SecretStore (Azure Key Vault) + ExternalSecrets
+      (db-secret, docker-registry-secret) de la app. Lo despliega ArgoCD después de
+      External Secrets Operator.
+    digest: bc6579e9ff199fd6aa71f4e0a1dcf54beffed610379995a1f03e5940caed9bbe
+    name: app-secrets
+    type: application
+    urls:
+    - https://juanpa1999.github.io/helm-chart/charts/app-secrets-0.1.0.tgz
+    version: 0.1.0
   backend:
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-25T17:22:53.292368-05:00"
+    created: "2026-11-26T10:21:34.444139-05:00"
     description: Backend (imagen jpcc141999/back3) de la app de monitoreo de sensores,
       con migraciones Alembic
     digest: 2d8df1e7c204c22a94b65eb8e11116af664386949dbcc66f9c911f3b5fb7efc1
@@ -14,7 +26,7 @@ entries:
     version: 0.3.6
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-25T17:22:53.291899-05:00"
+    created: "2026-11-26T10:21:34.443637-05:00"
     description: Backend (imagen jpcc141999/back3) de la app de monitoreo de sensores,
       con migraciones Alembic
     digest: 10d55b3732992d8fe6c67be734933295684639a659f2b9d552da46c26a92998a
@@ -25,7 +37,7 @@ entries:
     version: 0.3.5
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-25T17:22:53.291564-05:00"
+    created: "2026-11-26T10:21:34.443037-05:00"
     description: Backend (imagen jpcc141999/back3) de la app de monitoreo de sensores,
       con migraciones Alembic
     digest: 82fb6b53e27de2870757fde862964d2a0c3495539f0d6211c0ea5debb3f40af7
@@ -36,7 +48,7 @@ entries:
     version: 0.3.4
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-25T17:22:53.291226-05:00"
+    created: "2026-11-26T10:21:34.442049-05:00"
     description: Backend (imagen jpcc141999/back3) de la app de monitoreo de sensores,
       con migraciones Alembic
     digest: 96706818e1f79db74594bf21b4a4cb62d45728c7c800a0747d587a3db8348ff1
@@ -47,7 +59,7 @@ entries:
     version: 0.3.3
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-25T17:22:53.290645-05:00"
+    created: "2026-11-26T10:21:34.441347-05:00"
     description: Backend (imagen jpcc141999/back3) de la app de monitoreo de sensores,
       con migraciones Alembic
     digest: b55448c1918e3f05c5b2397353048adcb9a6a8166745ee3fcfd75dfb285ff48c
@@ -58,7 +70,7 @@ entries:
     version: 0.3.2
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-25T17:22:53.290017-05:00"
+    created: "2026-11-26T10:21:34.439211-05:00"
     description: Backend (imagen jpcc141999/back3) de la app de monitoreo de sensores,
       con migraciones Alembic
     digest: 43c5710fb55974b7639b3c4f33ddbc8683f770a33fc660008bf13f403b432a06
@@ -69,7 +81,7 @@ entries:
     version: 0.3.1
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-25T17:22:53.289537-05:00"
+    created: "2026-11-26T10:21:34.438625-05:00"
     description: Backend (imagen jpcc141999/back3) de la app de monitoreo de sensores,
       con migraciones Alembic
     digest: 7b1d3924078603d0414aa87f6e45032050ab0d328533676d6ff6a8d7f5f085d6
@@ -80,7 +92,7 @@ entries:
     version: 0.3.0
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-25T17:22:53.288918-05:00"
+    created: "2026-11-26T10:21:34.437896-05:00"
     description: Backend (imagen jpcc141999/back3) de la app de monitoreo de sensores,
       con migraciones Alembic
     digest: 30133e04659788c4c44006bbe0a18ecb27ebaeb6b5c082b471972531c77e654b
@@ -91,7 +103,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-25T17:22:53.287914-05:00"
+    created: "2026-11-26T10:21:34.437142-05:00"
     description: Backend (imagen jpcc141999/back3) de la app de monitoreo de sensores,
       con migraciones Alembic
     digest: 7fbd92e531b097eafe10ca220217389064fa1db2d99460b3cd3b38745477bb33
@@ -100,10 +112,21 @@ entries:
     urls:
     - https://juanpa1999.github.io/helm-chart/charts/backend-0.1.0.tgz
     version: 0.1.0
+  cluster-issuers:
+  - apiVersion: v2
+    created: "2026-11-26T10:21:34.44432-05:00"
+    description: ClusterIssuers de Let's Encrypt (staging + prod, HTTP-01 vía Traefik).
+      Lo despliega ArgoCD después de cert-manager.
+    digest: 715f058f67978071f372cdaefd769320bb7dae00da1e655352fb23f26f6d3cf3
+    name: cluster-issuers
+    type: application
+    urls:
+    - https://juanpa1999.github.io/helm-chart/charts/cluster-issuers-0.1.0.tgz
+    version: 0.1.0
   db:
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-25T17:22:53.293147-05:00"
+    created: "2026-11-26T10:21:34.445495-05:00"
     description: PostgreSQL (imagen jpcc141999/db1) para la app de monitoreo de sensores
     digest: fc032f44710777e3508233f6061497aba4a7bdb936442cc613b77253ddc4b2cf
     name: db
@@ -113,7 +136,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-25T17:22:53.292978-05:00"
+    created: "2026-11-26T10:21:34.44504-05:00"
     description: PostgreSQL (imagen jpcc141999/db1) para la app de monitoreo de sensores
     digest: f7bce10744b134d10d2ea090a1c36780cb432266ea4684fdadf86bd0eb10bc11
     name: db
@@ -123,7 +146,7 @@ entries:
     version: 0.1.1
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-25T17:22:53.29266-05:00"
+    created: "2026-11-26T10:21:34.444672-05:00"
     description: PostgreSQL (imagen jpcc141999/db1) para la app de monitoreo de sensores
     digest: 7f2a98cec4a02f21dd176b70c847687c23def1c0751775b6ecaf15fd46ae5359
     name: db
@@ -134,7 +157,7 @@ entries:
   frontend:
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-25T17:22:53.295246-05:00"
+    created: "2026-11-26T10:21:34.448645-05:00"
     description: Frontend (imagen jpcc141999/front4) de la app de monitoreo de sensores
     digest: cb4c263981baf78bfe184099d7ffa7a4d2ce96b061d7c0c01c8d24d6647ed1dc
     name: frontend
@@ -144,7 +167,7 @@ entries:
     version: 0.2.6
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-25T17:22:53.295033-05:00"
+    created: "2026-11-26T10:21:34.447824-05:00"
     description: Frontend (imagen jpcc141999/front4) de la app de monitoreo de sensores
     digest: 40b7f804d45e08c8f09d9a61f4ee941e124e4653f0be77e3a64858e83e96ea2a
     name: frontend
@@ -154,7 +177,7 @@ entries:
     version: 0.2.5
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-25T17:22:53.294674-05:00"
+    created: "2026-11-26T10:21:34.447333-05:00"
     description: Frontend (imagen jpcc141999/front4) de la app de monitoreo de sensores
     digest: 767385ba87c0a1005151040b39f74596544b63359379312bc280b32537ffd9cc
     name: frontend
@@ -164,7 +187,7 @@ entries:
     version: 0.2.4
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-25T17:22:53.294367-05:00"
+    created: "2026-11-26T10:21:34.446993-05:00"
     description: Frontend (imagen jpcc141999/front4) de la app de monitoreo de sensores
     digest: 0b43648c435430b9676c1dd96b953cf38624965a4f8f2766e15aee3a5e2ea434
     name: frontend
@@ -174,7 +197,7 @@ entries:
     version: 0.2.3
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-25T17:22:53.294126-05:00"
+    created: "2026-11-26T10:21:34.446738-05:00"
     description: Frontend (imagen jpcc141999/front4) de la app de monitoreo de sensores
     digest: 2dda641c2c87869919665a0a66bcbcfb96fd66512c82161658750b9b82fc5ee0
     name: frontend
@@ -184,7 +207,7 @@ entries:
     version: 0.2.2
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-25T17:22:53.293837-05:00"
+    created: "2026-11-26T10:21:34.446431-05:00"
     description: Frontend (imagen jpcc141999/front4) de la app de monitoreo de sensores
     digest: d5c523f71d06e4410792ff6646ec9666f5d8ba8507c0bc1bbbfa1dec0f051d3b
     name: frontend
@@ -194,7 +217,7 @@ entries:
     version: 0.2.1
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-25T17:22:53.293616-05:00"
+    created: "2026-11-26T10:21:34.446091-05:00"
     description: Frontend (imagen jpcc141999/front4) de la app de monitoreo de sensores
     digest: 69bcefd2075907a2895f117e4e65ef1bb04a20a555b752142d72cf2ae46e9c63
     name: frontend
@@ -204,7 +227,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-25T17:22:53.293381-05:00"
+    created: "2026-11-26T10:21:34.445792-05:00"
     description: Frontend (imagen jpcc141999/front4) de la app de monitoreo de sensores
     digest: fb3e79bdee6ef9196bd07d4ba38d8b5efb0ab16a8d40e9cf560bb84cf188a502
     name: frontend
@@ -215,7 +238,7 @@ entries:
   ingress:
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-25T17:22:53.297953-05:00"
+    created: "2026-11-26T10:21:34.450562-05:00"
     description: Ingress (Traefik de k3s) para frontend + backend de la app de sensores
     digest: 21c4b0234200cf3cf23bebec7b1bd753638f7c790cf1b6010a21b85becf5f367
     name: ingress
@@ -225,7 +248,7 @@ entries:
     version: 0.2.1
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-25T17:22:53.297483-05:00"
+    created: "2026-11-26T10:21:34.450138-05:00"
     description: Ingress (Traefik de k3s) para frontend + backend de la app de sensores
     digest: 6600a81896604ecb6d5753a8a8d68fed8a3a9815270a6abeae20c3b14f09d3bb
     name: ingress
@@ -235,7 +258,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-25T17:22:53.296919-05:00"
+    created: "2026-11-26T10:21:34.449741-05:00"
     description: Ingress (Traefik de k3s) para frontend + backend de la app de sensores
     digest: 9d399673ba4aed0dc1281e920b73de24a05922244917b44ea24e887db1b0e582
     name: ingress
@@ -245,7 +268,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-25T17:22:53.296293-05:00"
+    created: "2026-11-26T10:21:34.449438-05:00"
     description: Ingress (Traefik de k3s) para frontend + backend de la app de sensores
     digest: 85e67db101a64dc183ed6e199a7ef7596f497730cc5c5cfdc5b511ee8377135e
     name: ingress
@@ -255,7 +278,7 @@ entries:
     version: 0.1.1
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-25T17:22:53.295718-05:00"
+    created: "2026-11-26T10:21:34.44911-05:00"
     description: Ingress (Traefik de k3s) para frontend + backend de la app de sensores
     digest: 8f1b83679a16969e43c4c0bfdf1e908f458c00668a50de1b90f5bfc91a3bb815
     name: ingress
@@ -263,4 +286,4 @@ entries:
     urls:
     - https://juanpa1999.github.io/helm-chart/charts/ingress-0.1.0.tgz
     version: 0.1.0
-generated: "2026-11-25T17:22:53.286934-05:00"
+generated: "2026-11-26T10:21:34.434748-05:00"

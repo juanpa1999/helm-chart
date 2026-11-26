@@ -1,0 +1,20 @@
+{{- $email := required "global.letsencryptEmail es obligatorio (argocd/aks/global-values.yaml)" .Values.global.letsencryptEmail }}
+{{- range $name, $issuer := .Values.issuers }}
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: {{ $name }}
+spec:
+  acme:
+    server: {{ $issuer.server }}
+    email: {{ $email }}
+    # Clave de la CUENTA ACME (no la del certificado). Al ser ClusterIssuer,
+    # el Secret vive en el namespace de cert-manager.
+    privateKeySecretRef:
+      name: {{ $name }}-account-key
+    solvers:
+      - http01:
+          ingress:
+            ingressClassName: {{ $.Values.ingressClassName }}
+{{- end }}

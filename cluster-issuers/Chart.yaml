@@ -1,0 +1,5 @@
+apiVersion: v2
+name: cluster-issuers
+description: ClusterIssuers de Let's Encrypt (staging + prod, HTTP-01 vía Traefik). Lo despliega ArgoCD después de cert-manager.
+type: application
+version: 0.1.0

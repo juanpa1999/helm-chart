@@ -1,0 +1,5 @@
+apiVersion: v2
+name: app-secrets
+description: ServiceAccount federado + SecretStore (Azure Key Vault) + ExternalSecrets (db-secret, docker-registry-secret) de la app. Lo despliega ArgoCD después de External Secrets Operator.
+type: application
+version: 0.1.0
